@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { UserInfo } from "./UserInfo";
 
 export const CurrentUserInfo = () => {
   const [user, setUser] = useState(null);
@@ -18,5 +17,11 @@ export const CurrentUserInfo = () => {
     fetchUser();
   }, []);
 
-  return <div>{user ? <UserInfo user={user} /> : <p>Loading...</p>}</div>;
+  return React.Children.map(children, (child) => {
+    if (!React.isValidElement(child)) {
+      return React.cloneElement(child, { user });
+    }
+
+    return child;
+  });
 };
